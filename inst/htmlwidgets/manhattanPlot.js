@@ -57,20 +57,21 @@ HTMLWidgets.widget({
             .call(yAxis)
             .call(customAxis)
 
-        var significanceBar = svg.append("line")
-            .attr("x1", padding + 4)
-            .attr("x2", width - padding)
-            .attr("y1", yScale(0))
-            .attr("y2", yScale(0))
-            .attr("stroke-width", 2)
-            .attr("stroke", "black")
+        if (x.settings.sigLine){
+            var significanceBar = svg.append("line")
+                .attr("x1", padding * 2)
+                .attr("x2", width - padding)
+                .attr("y1", yScale(0))
+                .attr("y2", yScale(0))
+                .attr("stroke-width", 2)
+                .attr("stroke", "black")
 
-        var significanceText = svg.append("text")
-            .attr("x", width - padding)
-            .attr("y", 0)
-            .attr("text-anchor", "end")
-            .text("")
-
+            var significanceText = svg.append("text")
+                .attr("x", width - padding)
+                .attr("y", 0)
+                .attr("text-anchor", "end")
+                .text("")
+        }
 
         function updateManhattan(data, updateTime) {
 
@@ -99,17 +100,19 @@ HTMLWidgets.widget({
             xScale.domain(d3.range(data.length + 1))
             colorScale.domain([minVal, maxVal])
 
-            significanceBar
-                .transition()
-                .duration(updateTime)
-                .attr("y1", yScale(bonferroni))
-                .attr("y2", yScale(bonferroni))
+            if(x.settings.sigLine){
+                significanceBar
+                    .transition()
+                    .duration(updateTime)
+                    .attr("y1", yScale(bonferroni))
+                    .attr("y2", yScale(bonferroni))
 
-            significanceText
-                .transition()
-                .duration(updateTime)
-                .attr("y", yScale(bonferroni) - 5)
-                .text("Needed for significance")
+                significanceText
+                    .transition()
+                    .duration(updateTime)
+                    .attr("y", yScale(bonferroni) - 5)
+                    .text("Needed for significance")
+            }
 
             var points = svg.selectAll("circle")
                 .data(data, function(d) {
@@ -178,8 +181,6 @@ HTMLWidgets.widget({
         }
 
         updateManhattan(data, transitionSpeed) //get it all running!
-
-
 
     },
 

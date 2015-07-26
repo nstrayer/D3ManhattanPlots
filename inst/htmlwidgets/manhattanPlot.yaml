@@ -2,8 +2,8 @@ dependencies:
   - name: d3
     version: 3.5.6
     src: "htmlwidgets/lib/d3-3.5.6"
-    script: d3.min.js
+    script: "d3.min.js"
   - name: style
     version: 0.0.1
     src: "htmlwidgets/lib/css"
-    stylesheet: style.css
+    stylesheet: "style.css"
