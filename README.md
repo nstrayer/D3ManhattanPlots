@@ -26,5 +26,7 @@ manhattanPlot(d, sigLine = FALSE)
 
 Make sure your data is a dataframe with one column with the SNP names and another with their corresponding p-values. You can then specify these to the plotting function. 
 
-`manhattanPlot(d, snps_col = "SNP", pvals_col = "PVal")`
+```{r}
+manhattanPlot(d, snps_col = "SNP", pvals_col = "PVal")
+```
 
