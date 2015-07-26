@@ -1,0 +1,24 @@
+---
+title: "manhattanPlotDemo"
+author: "Nick Strayer"
+date: "July 26, 2015"
+output: html_document
+---
+
+First we load the library and data: 
+```{r}
+library(manhattanPlot)
+d = read.csv('data/males_small_data.csv')
+```
+
+Take a quick peak at the data: 
+```{r}
+head(d)
+```
+
+
+...and plot: 
+```{r}
+manhattanPlot(d)
+```
+
