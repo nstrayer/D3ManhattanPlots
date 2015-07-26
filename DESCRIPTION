@@ -1,8 +1,8 @@
 Package: manhattanPlot
-Title: What the package does (one line)
+Title: Interactive d3 manhattan plot viewer for genome wide association studies.
 Version: 0.1
-Authors@R: "First Last <first.last@example.com> [aut, cre]"
-Description: What the package does (one paragraph)
+Authors@R: "Nick Strayer <nicholas.j.strayer@vanderbilt.edu> [aut, cre]"
+Description: Takes data given in the form of snp and pvalue and constructs an interactive manhattan plot visualization.
 Depends: R (>= 3.1.2)
-License: What license is it under?
+License: MIT
 LazyData: true

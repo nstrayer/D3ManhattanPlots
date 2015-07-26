@@ -1,27 +1,32 @@
-#' <Add Title>
+#' <D3 Manhattan Plot Visualizer>
 #'
-#' <Add Description>
+#' <Interact with yo' data!>
 #'
 #' @import htmlwidgets
 #'
 #' @export
-manhattanPlot <- function(dataset, width = NULL, height = NULL, snps  = "snp",pvals = "pval") {
-  
+manhattanPlot <- function(dataset, width = NULL, height = NULL,
+    snps_col  = "SNP",
+    pvals_col = "PVal",
+    sigLine   = TRUE) {
+
     # create a list that contains the settings
     settings <- list(
-      snps = snps,
-      pvals = pvals
+      snps_col = snps_col,
+      pvals_col = pvals_col,
+      sigLine   = sigLine
     )
-    
+
     #This is where data manipulation will go.
-    data = dataset
-    
+    data  = data.frame(dataset[snps_col], dataset[pvals_col])
+
+
     # pass the data and settings using 'x'
     x <- list(
       data = data,
       settings = settings
     )
-  
+
 
   # create widget
   htmlwidgets::createWidget(
