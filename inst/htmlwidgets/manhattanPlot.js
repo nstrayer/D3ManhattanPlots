@@ -135,8 +135,19 @@ HTMLWidgets.widget({
                 .attr("cy", 0)
                 .attr("r", 5)
                 .on("mouseover", function(d) {
-                    d3.select("#SNPName").text(d.SNP)
-                    d3.select("#PValue").text(Math.pow(10, -d.PVal).toExponential(4))
+                    d3.select(this)
+                        .transition()
+                        .attr("r", 10)
+                    var xPos = parseFloat(d3.select(this).attr("cx"));
+                    var yPos = parseFloat(d3.select(this).attr("cy"));
+                    updateTooltip(d, xPos, yPos)
+                })
+                .on("mouseout", function(){
+                    d3.select(this) //bring the dot size back down
+                        .transition()
+                        .attr("r", 5)
+
+                    d3.select("#tooltip").classed("hidden", true); //hide the tooltip.
                 })
                 .transition()
                 .duration(updateTime)
@@ -180,6 +191,51 @@ HTMLWidgets.widget({
 
         }
 
+        function startTooltip(){
+            var tip = d3.select(el).append("div")
+                .attr("id", "tooltip")
+                .attr("class", "hidden")
+
+            var snpName = tip.append("p")
+
+            snpName.append("strong")
+                .text("SNP: ")
+
+            snpName.append("span")
+                .attr("id", "snpName")
+                .text("")
+
+            var pValueShow = tip.append("p")
+
+            pValueShow.append("strong")
+                .text("P-Value: ")
+
+            pValueShow.append("span")
+                .attr("id", "pValueShow")
+        }
+
+        function updateTooltip(d, x, y){
+            //if tooltip is on right side of viz put it on the left side of the point
+            if (x > width/2){//so that it doesnt run off the screen.
+                x = x - 150 - padding*2 //the tooltip is 150px wide.
+            } else { //if it is on left half
+                x = x + padding*.71; //frustratingly uneven. 
+            }
+            d3.select("#snpName").text(d.SNP)
+            d3.select("#pValueShow").text(Math.pow(10, -d.PVal).toExponential(4))
+
+            //Update the tooltip position and value
+            //Get this bar's x/y values, then augment for the tooltip
+
+            d3.select("#tooltip")
+              .style("left", x + "px")
+              .style("top", y + "px");
+
+            //Show the tooltip
+            d3.select("#tooltip").classed("hidden", false);
+        }
+
+        startTooltip() //Initialize the tooltip.
         updateManhattan(data, transitionSpeed) //get it all running!
 
     },
