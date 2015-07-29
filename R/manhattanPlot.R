@@ -8,13 +8,15 @@
 manhattanPlot <- function(dataset, width = NULL, height = NULL,
     snps_col  = "SNP",
     pvals_col = "PVal",
-    sigLine   = TRUE) {
+    sigLine   = TRUE,
+    animationSpeed = 1000) {
 
     # create a list that contains the settings
     settings <- list(
-      snps_col = snps_col,
+      snps_col  = snps_col,
       pvals_col = pvals_col,
-      sigLine   = sigLine
+      sigLine   = sigLine,
+      animationSpeed = animationSpeed
     )
 
     #This is where data manipulation will go.
