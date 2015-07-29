@@ -23,8 +23,8 @@ HTMLWidgets.widget({
             padding = 15,
             red = "#e41a1c",
             blue = "#377eb8",
-            transitionSpeed = 1500,
-            delayTime = 20,
+            transitionSpeed = x.settings.animationSpeed,
+            delayTime = transitionSpeed/x.data.length * .5,
             yScale = d3.scale.linear().domain([0, 1]).range([height, padding]), //values wont exceed 1 ever.
             xScale = d3.scale.ordinal().domain([0, 1]).rangePoints([padding * 4, width - padding], 0),
             colorScale = d3.scale.linear().domain([0, 1]).range([blue, red]),
@@ -114,6 +114,7 @@ HTMLWidgets.widget({
                     .text("Needed for significance")
             }
 
+            //Draw the points
             var points = svg.selectAll("circle")
                 .data(data, function(d) {
                     return d.SNP;
@@ -132,7 +133,7 @@ HTMLWidgets.widget({
                 .attr("cx", function(d, i) {
                     return xScale(i);
                 })
-                .attr("cy", 0)
+                .attr("cy", height + 10)
                 .attr("r", 5)
                 .on("mouseover", function(d) {
                     d3.select(this)
@@ -180,6 +181,43 @@ HTMLWidgets.widget({
                 })
 
 
+            //Draw the lines beneath the points.
+
+            var lines = svg.selectAll(".balloonString")
+                .data(data, function(d) { return d.SNP; })
+
+            lines
+                .exit()
+                .transition()
+                .duration(updateTime / 2)
+                .attr("y1", height + 10)
+                .attr("y2", height + 10)
+                .remove()
+
+            lines
+                .enter()
+                .append("line")
+                .attr("x1", function(d, i) { return xScale(i); })
+                .attr("x2", function(d, i) { return xScale(i); })
+                .attr("y1", height + 10)
+                .attr("y2", height + 10)
+                .attr("stroke-width", 1)
+                .attr("stroke", "black")
+                .transition()
+                .duration(updateTime)
+                .delay(function(d, i) { return delayTime * i; })
+                .attr("y2", function(d) { return (yScale(d.PVal) + 5);})
+
+
+            lines
+                .transition()
+                .duration(updateTime)
+                .delay(function(d, i) { return delayTime * i; })
+                .attr("x1", function(d, i) { return xScale(i); }) //doesnt matter because user cant change data.
+                .attr("x2", function(d, i) { return xScale(i); }) //But I guess it's good to keep.
+                .attr("y2", function(d) { return (yScale(d.PVal) + 5);})
+
+
             gy.transition()
                 .duration(updateTime)
                 .call(yAxis)
@@ -215,21 +253,21 @@ HTMLWidgets.widget({
         }
 
         function updateTooltip(d, x, y){
+            var right = x > width/2,
+            xLoc;
             //if tooltip is on right side of viz put it on the left side of the point
-            if (x > width/2){//so that it doesnt run off the screen.
-                x = x - 150 - padding*2 //the tooltip is 150px wide.
+            if (right){//so that it doesnt run off the screen.
+                var xLoc = x - 150 - padding //the tooltip is 150px wide.
             } else { //if it is on left half
-                x = x + padding*.71; //frustratingly uneven. 
+                xLoc = x  + padding; //frustratingly uneven.
             }
             d3.select("#snpName").text(d.SNP)
             d3.select("#pValueShow").text(Math.pow(10, -d.PVal).toExponential(4))
 
             //Update the tooltip position and value
-            //Get this bar's x/y values, then augment for the tooltip
-
             d3.select("#tooltip")
-              .style("left", x + "px")
-              .style("top", y + "px");
+              .style("left", xLoc + "px")
+              .style("top",  y + padding + "px");
 
             //Show the tooltip
             d3.select("#tooltip").classed("hidden", false);
