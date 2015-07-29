@@ -3,7 +3,7 @@
 Traditional static manhattan plots are slow and ugly. Let's fix that with a little d3 and R!
 
 ## Example: 
-This is assuming you've clone this repo onto your computer. 
+This is assuming you've cloned this repo onto your computer. 
 
 ```{r}
 setwd("manhattanPlot")  #Get into the directory
