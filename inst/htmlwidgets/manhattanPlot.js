@@ -16,15 +16,13 @@ HTMLWidgets.widget({
 
         var data = HTMLWidgets.dataframeToD3(x.data);
 
-        console.log(data);
-
         var width = el.getBoundingClientRect().width,
             height = el.getBoundingClientRect().height,
             padding = 15,
             red = "#e41a1c",
             blue = "#377eb8",
             transitionSpeed = x.settings.animationSpeed,
-            delayTime = transitionSpeed/x.data.length * .5,
+            delayTime = transitionSpeed/x.data.SNP.length;
             yScale = d3.scale.linear().domain([0, 1]).range([height, padding]), //values wont exceed 1 ever.
             xScale = d3.scale.ordinal().domain([0, 1]).rangePoints([padding * 4, width - padding], 0),
             colorScale = d3.scale.linear().domain([0, 1]).range([blue, red]),
@@ -75,26 +73,15 @@ HTMLWidgets.widget({
 
         function updateManhattan(data, updateTime) {
 
-            delayTime = 20;
-
             if (data.length > 200) { //if it is a small dataset do transitions.
                 updateTime = 0
                 delayTime = 0
             }
 
-            for (var i = 0; i < data.length; i++) {
-                data[i].PVal = parseFloat(data[i].PVal);
-                delete data[i][""] //because I am a neat freak.
-            }
-
-            var dataMax = d3.max(data, function(d) {
-                    return d.PVal
-                }),
+            var dataMax = d3.max(data, function(d) { return d.PVal }),
                 bonferroni = -Math.log10(.05 / data.length),
                 maxVal = d3.max([dataMax, bonferroni + .5]),
-                minVal = d3.min(data, function(d) {
-                    return d.PVal
-                });
+                minVal = d3.min(data, function(d) { return d.PVal });
 
             yScale.domain([0, maxVal])
             xScale.domain(d3.range(data.length + 1))
@@ -130,9 +117,7 @@ HTMLWidgets.widget({
             points
                 .enter()
                 .append("circle")
-                .attr("cx", function(d, i) {
-                    return xScale(i);
-                })
+                .attr("cx", function(d, i) { return xScale(i); })
                 .attr("cy", height + 10)
                 .attr("r", 5)
                 .on("mouseover", function(d) {
@@ -141,14 +126,14 @@ HTMLWidgets.widget({
                         .attr("r", 10)
                     var xPos = parseFloat(d3.select(this).attr("cx"));
                     var yPos = parseFloat(d3.select(this).attr("cy"));
-                    updateTooltip(d, xPos, yPos)
+                    drawTooltip(d, xPos, yPos)
                 })
                 .on("mouseout", function(){
                     d3.select(this) //bring the dot size back down
                         .transition()
                         .attr("r", 5)
 
-                    d3.select("#tooltip").classed("hidden", true); //hide the tooltip.
+                    d3.select("#tooltip").remove(); //kill the tooltip.
                 })
                 .transition()
                 .duration(updateTime)
@@ -229,51 +214,39 @@ HTMLWidgets.widget({
 
         }
 
-        function startTooltip(){
-            var tip = d3.select(el).append("div")
-                .attr("id", "tooltip")
-                .attr("class", "hidden")
-
-            var snpName = tip.append("p")
-
-            snpName.append("strong")
-                .text("SNP: ")
-
-            snpName.append("span")
-                .attr("id", "snpName")
-                .text("")
-
-            var pValueShow = tip.append("p")
-
-            pValueShow.append("strong")
-                .text("P-Value: ")
-
-            pValueShow.append("span")
-                .attr("id", "pValueShow")
-        }
-
-        function updateTooltip(d, x, y){
+        function drawTooltip(d, x, y){
             var right = x > width/2,
-            xLoc;
-            //if tooltip is on right side of viz put it on the left side of the point
-            if (right){//so that it doesnt run off the screen.
-                var xLoc = x - 150 - padding //the tooltip is 150px wide.
-            } else { //if it is on left half
-                xLoc = x  + padding; //frustratingly uneven.
+                w = 130,
+                xLoc = right ? (x - w - 5) : (x + 5);
+
+            var tip = svg.append("g") //Make a holder for the text
+                .attr("id", "tooltip")
+                .attr("transform", "translate(" + xLoc + ", " + (y+5) + ")") //position it over the point
+
+            tip.append("rect")
+                .attr("width", w)
+                .attr("height", 50)
+                .attr("rx", 15)
+                .attr("ry", 15)
+                .attr("fill", "#f0f0f0")
+
+            tip.append("text") //write the snp name
+                .attr("y", 20)
+                .attr("x", 5)
+                .style("font-size", "0px")
+                .text("SNP: " + d.SNP)
+                .transition().duration(250)
+                .style("font-size", "14px")
+
+            tip.append("text") //write the pvalue
+                .attr("y", 40)
+                .attr("x", 5)
+                .style("font-size", "0px")
+                .text("P-Value: " + Math.pow(10, -d.PVal).toExponential(4) )
+                .transition().duration(250)
+                .style("font-size", "14px")
             }
-            d3.select("#snpName").text(d.SNP)
-            d3.select("#pValueShow").text(Math.pow(10, -d.PVal).toExponential(4))
 
-            //Update the tooltip position and value
-            d3.select("#tooltip")
-              .style("left", xLoc + "px")
-              .style("top",  y + padding + "px");
-
-            //Show the tooltip
-            d3.select("#tooltip").classed("hidden", false);
-        }
-
-        startTooltip() //Initialize the tooltip.
         updateManhattan(data, transitionSpeed) //get it all running!
 
     },
