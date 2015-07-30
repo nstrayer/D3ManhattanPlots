@@ -215,31 +215,36 @@ HTMLWidgets.widget({
         }
 
         function drawTooltip(d, x, y){
+            var right = x > width/2,
+                w = 130,
+                xLoc = right ? (x - w - 5) : (x + 5);
 
             var tip = svg.append("g") //Make a holder for the text
                 .attr("id", "tooltip")
-                .attr("transform", "translate(" + x + ", " + y + ")") //position it over the point
+                .attr("transform", "translate(" + xLoc + ", " + (y+5) + ")") //position it over the point
 
             tip.append("rect")
-                .attr("width", 100)
-                .attr("height", 70)
-                .attr("fill", "grey")
+                .attr("width", w)
+                .attr("height", 50)
+                .attr("rx", 15)
+                .attr("ry", 15)
+                .attr("fill", "#f0f0f0")
 
             tip.append("text") //write the snp name
-                .attr("y", 30)
-                .attr("x", 10)
+                .attr("y", 20)
+                .attr("x", 5)
                 .style("font-size", "0px")
                 .text("SNP: " + d.SNP)
-                .transition().duration(500)
-                .style("font-size", "15px")
+                .transition().duration(250)
+                .style("font-size", "14px")
 
             tip.append("text") //write the pvalue
-                .attr("y", 50)
-                .attr("x", 10)
+                .attr("y", 40)
+                .attr("x", 5)
                 .style("font-size", "0px")
                 .text("P-Value: " + Math.pow(10, -d.PVal).toExponential(4) )
-                .transition().duration(500)
-                .style("font-size", "15px")
+                .transition().duration(250)
+                .style("font-size", "14px")
             }
 
         updateManhattan(data, transitionSpeed) //get it all running!
