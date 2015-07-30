@@ -16,15 +16,13 @@ HTMLWidgets.widget({
 
         var data = HTMLWidgets.dataframeToD3(x.data);
 
-        console.log(data);
-
         var width = el.getBoundingClientRect().width,
             height = el.getBoundingClientRect().height,
             padding = 15,
             red = "#e41a1c",
             blue = "#377eb8",
             transitionSpeed = x.settings.animationSpeed,
-            delayTime = transitionSpeed/x.data.length * .5,
+            delayTime = transitionSpeed/x.data.SNP.length;
             yScale = d3.scale.linear().domain([0, 1]).range([height, padding]), //values wont exceed 1 ever.
             xScale = d3.scale.ordinal().domain([0, 1]).rangePoints([padding * 4, width - padding], 0),
             colorScale = d3.scale.linear().domain([0, 1]).range([blue, red]),
@@ -74,9 +72,8 @@ HTMLWidgets.widget({
         }
 
         function updateManhattan(data, updateTime) {
-
-            delayTime = 20;
-
+            // delayTime = 20;
+            console.log(delayTime)
             if (data.length > 200) { //if it is a small dataset do transitions.
                 updateTime = 0
                 delayTime = 0
