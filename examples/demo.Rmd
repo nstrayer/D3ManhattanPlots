@@ -12,14 +12,12 @@ setwd("..")
 devtools::install() 
 library(manhattanPlot)
 d = read.csv('examples/data/males_small_data.csv')
-manhattanPlot(d, animationSpeed = 50)
 ```
 
 Take a quick peak at the data: 
 ```{r}
 head(d)
 ```
-
 
 ...and plot: 
 ```{r}
