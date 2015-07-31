@@ -78,10 +78,10 @@ HTMLWidgets.widget({
                 delayTime = 0
             }
 
-            var dataMax = d3.max(data, function(d) { return d.PVal }),
+            var dataMax    = d3.max(data, function(d) { return d.PVal }),
                 bonferroni = -Math.log10(.05 / data.length),
-                maxVal = d3.max([dataMax, bonferroni + .5]),
-                minVal = d3.min(data, function(d) { return d.PVal });
+                maxVal     = d3.max([dataMax, bonferroni + .5]),
+                minVal     = d3.min(data, function(d) { return d.PVal });
 
             yScale.domain([0, maxVal])
             xScale.domain(d3.range(data.length + 1))
@@ -108,30 +108,29 @@ HTMLWidgets.widget({
                 })
 
             points
-                .exit()
-                .transition()
-                .duration(updateTime / 2)
-                .attr("cy", 0)
-                .remove()
-
-            points
                 .enter()
                 .append("circle")
                 .attr("cx", function(d, i) { return xScale(i); })
                 .attr("cy", height + 10)
                 .attr("r", 5)
                 .on("mouseover", function(d) {
-                    d3.select(this)
-                        .transition()
+                    d3.select(this).transition() //make the point bigger
                         .attr("r", 10)
+
+                    d3.select("#" + d.SNP).transition() //move the line with it.
+                        .attr("y2", function(d) { return (yScale(d.PVal) + 10);})
+
                     var xPos = parseFloat(d3.select(this).attr("cx"));
                     var yPos = parseFloat(d3.select(this).attr("cy"));
                     drawTooltip(d, xPos, yPos)
                 })
-                .on("mouseout", function(){
+                .on("mouseout", function(d){
                     d3.select(this) //bring the dot size back down
                         .transition()
                         .attr("r", 5)
+
+                    d3.select("#" + d.SNP).transition()
+                        .attr("y2", function(d) { return (yScale(d.PVal) + 5);})
 
                     d3.select("#tooltip").remove(); //kill the tooltip.
                 })
@@ -148,40 +147,14 @@ HTMLWidgets.widget({
                     return colorScale(d.PVal);
                 })
 
-
-            points
-                .transition()
-                .duration(updateTime)
-                .delay(function(d, i) {
-                    return delayTime * i;
-                })
-                .attr("cx", function(d, i) {
-                    return xScale(i);
-                })
-                .attr("cy", function(d) {
-                    return (yScale(d.PVal));
-                })
-                .attr("fill", function(d) {
-                    return colorScale(d.PVal);
-                })
-
-
-            //Draw the lines beneath the points.
-
+            //Draw the lines (or balloon strings) beneath the points.
             var lines = svg.selectAll(".balloonString")
                 .data(data, function(d) { return d.SNP; })
 
             lines
-                .exit()
-                .transition()
-                .duration(updateTime / 2)
-                .attr("y1", height + 10)
-                .attr("y2", height + 10)
-                .remove()
-
-            lines
                 .enter()
                 .append("line")
+                .attr("id", function(d){return d.SNP})
                 .attr("x1", function(d, i) { return xScale(i); })
                 .attr("x2", function(d, i) { return xScale(i); })
                 .attr("y1", height + 10)
@@ -192,16 +165,6 @@ HTMLWidgets.widget({
                 .duration(updateTime)
                 .delay(function(d, i) { return delayTime * i; })
                 .attr("y2", function(d) { return (yScale(d.PVal) + 5);})
-
-
-            lines
-                .transition()
-                .duration(updateTime)
-                .delay(function(d, i) { return delayTime * i; })
-                .attr("x1", function(d, i) { return xScale(i); }) //doesnt matter because user cant change data.
-                .attr("x2", function(d, i) { return xScale(i); }) //But I guess it's good to keep.
-                .attr("y2", function(d) { return (yScale(d.PVal) + 5);})
-
 
             gy.transition()
                 .duration(updateTime)
