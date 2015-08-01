@@ -11,6 +11,7 @@
 #' @param pvals_col The name of the column of your dataframe containing the PValues. Defaults to "PVal".
 #' @param sigLine Draw a line indicating significance threshold according to a conservative bonferroni correction.
 #' @param animationSpeed How fast you want the program to animate in milliseconds. To turn off set to 0.
+#' @param logged Have the PValues already been -log10()'d? Defaults to false.
 #' @keywords manhattan plot, statistical genetics, GWAS
 #'
 #' @examples
@@ -27,18 +28,25 @@ manhattanPlot <- function(dataset, width = NULL, height = NULL,
     snps_col  = "SNP",
     pvals_col = "PVal",
     sigLine   = TRUE,
-    animationSpeed = 1000) {
+    animationSpeed = 1000,
+    logged = FALSE) {
 
     # create a list that contains the settings
     settings <- list(
       snps_col  = snps_col,
       pvals_col = pvals_col,
       sigLine   = sigLine,
-      animationSpeed = animationSpeed
+      animationSpeed = animationSpeed,
+      logged = logged
     )
 
     #This is where data manipulation will go.
-    data  = data.frame(dataset[snps_col], dataset[pvals_col])
+    if(!logged){
+        PVal = -log10(dataset[pvals_col])
+    } else {
+        PVal = dataset[pvals_col]
+    }
+    data  = data.frame(dataset[snps_col], PVal)
 
     # pass the data and settings using 'x'
     x <- list(
@@ -82,9 +90,21 @@ renderManhattanPlot <- function(expr, env = parent.frame(), quoted = FALSE) {
 #' @format A data frame with 100 rows and 2 columns:
 #' \describe{
 #'   \item{SNP}{Snp names. Character}
-#'   \item{PVal}{-log10 of the pvalues. Float}
+#'   \item{PVal}{P-Values. Float}
 #' }
 #' @source Klein, R. J., Zeiss, C., Chew, E. Y., Tsai, J. Y., Sackler, R. S., Haynes,
 #' C., ... & Hoh, J. (2005). Complement factor H polymorphism in age-related
 #' macular degeneration. Science, 308(5720), 385-389.
 "sampleVals"
+
+#' Randomly generated snps and pvals
+#'
+#' Randomly generated dataset of 400 snps. One should result as significant using
+#' the bonferroni correction threshold built in.
+#'
+#' @format A data frame with 100 rows and 2 columns:
+#' \describe{
+#'   \item{SNP}{Snp names. Character}
+#'   \item{PVal}{P-Values. Float}
+#' }
+"random"

@@ -5,7 +5,8 @@
 \title{D3 Manhattan Plot Visualizer}
 \usage{
 manhattanPlot(dataset, width = NULL, height = NULL, snps_col = "SNP",
-  pvals_col = "PVal", sigLine = TRUE, animationSpeed = 1000)
+  pvals_col = "PVal", sigLine = TRUE, animationSpeed = 1000,
+  logged = FALSE)
 }
 \arguments{
 \item{dataset}{Your data. Contains SNP names and PValues as columns of a dataframe.}
@@ -21,6 +22,8 @@ manhattanPlot(dataset, width = NULL, height = NULL, snps_col = "SNP",
 \item{sigLine}{Draw a line indicating significance threshold according to a conservative bonferroni correction.}
 
 \item{animationSpeed}{How fast you want the program to animate in milliseconds. To turn off set to 0.}
+
+\item{logged}{Have the PValues already been -log10()'d? Defaults to false.}
 }
 \description{
 This generates an interactive manhattan plot using d3.js.

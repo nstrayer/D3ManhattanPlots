@@ -7,7 +7,7 @@
 \format{A data frame with 100 rows and 2 columns:
 \describe{
   \item{SNP}{Snp names. Character}
-  \item{PVal}{-log10 of the pvalues. Float}
+  \item{PVal}{P-Values. Float}
 }}
 \source{
 Klein, R. J., Zeiss, C., Chew, E. Y., Tsai, J. Y., Sackler, R. S., Haynes,
