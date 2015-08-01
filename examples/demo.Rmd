@@ -30,3 +30,17 @@ head(d)
 manhattanPlot(d)
 ```
 
+### Some more examples: 
+
+If we want to see it with slightly less homogeneous data we can use an included randomly generated dataset.
+
+```{r}
+manhattanPlot(random)
+```
+
+We can also play around with some of the options. 
+
+```{r}
+manhattanPlot(random, sigLine = FALSE, animationSpeed = 0)
+```
+
