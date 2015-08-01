@@ -5,7 +5,12 @@ HTMLWidgets.widget({
     type: 'output',
 
     initialize: function(el, width, height) {
-
+        //just some nonsense to move objects to front easily.
+        d3.selection.prototype.moveToFront = function() {
+          return this.each(function(){
+            this.parentNode.appendChild(this);
+          });
+        };
         return {
             // TODO: add instance fields as required
         }
@@ -65,7 +70,7 @@ HTMLWidgets.widget({
 
         if (x.settings.sigLine){
             var significanceBar = svg.append("line")
-                .attr("x1", padding * 2)
+                .attr("x1", padding*1.5)
                 .attr("x2", width - padding)
                 .attr("y1", yScale(0))
                 .attr("y2", yScale(0))
@@ -117,7 +122,9 @@ HTMLWidgets.widget({
                 .attr("cy", height + 10)
                 .attr("r", 5)
                 .on("mouseover", function(d) {
-                    d3.select(this).transition() //make the point bigger
+                    d3.select(this)
+                        .moveToFront()
+                        .transition() //make the point bigger
                         .attr("r", 10)
 
                     d3.select("#" + d.SNP).transition() //move the line with it.
