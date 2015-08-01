@@ -1,10 +1,28 @@
-#' <D3 Manhattan Plot Visualizer>
+#' D3 Manhattan Plot Visualizer
 #'
-#' <Interact with yo' data!>
+#' This generates an interactive manhattan plot using d3.js.
+#' Mouse over snps to see name and pvalue. Now you don't have to waste your time
+#' writing R code to find significant snp identities.
+#'
+#' @param dataset Your data. Contains SNP names and PValues as columns of a dataframe.
+#' @param width Set custom width.
+#' @param height Set custom height.
+#' @param snps_col The name of the column of your dataframe containing the SNP names. Defaults to "SNP".
+#' @param pvals_col The name of the column of your dataframe containing the PValues. Defaults to "PVal".
+#' @param sigLine Draw a line indicating significance threshold according to a conservative bonferroni correction.
+#' @param animationSpeed How fast you want the program to animate in milliseconds. To turn off set to 0.
+#' @keywords manhattan plot, statistical genetics, GWAS
+#'
+#' @examples
+#' #Load sample dataset from the package.
+#' d = sampleVals
+#' #and plot. It's that easy. 
+#' manhattanPlot(d, sigLine = FALSE)
 #'
 #' @import htmlwidgets
 #'
 #' @export
+
 manhattanPlot <- function(dataset, width = NULL, height = NULL,
     snps_col  = "SNP",
     pvals_col = "PVal",
