@@ -2,7 +2,9 @@
 title: "D3ManhattanPlot Demo"
 author: "Nick Strayer"
 date: "August 1, 2015"
-output: html_document
+output:
+  html_document:
+    fig_width: 9
 ---
 ### Intro: 
 This is a simple use case of using the D3ManhattanPlots HTMLWidget for R to generate interactive manhattan plots for genome wide association studies (GWAS). 
