@@ -28,9 +28,14 @@ manhattanPlot(d, animationSpeed = 50)
 
 ### Data: 
 
-Make sure your data is a dataframe with one column with the SNP names and another with their corresponding -log10-ed p-values. You can then specify these to the plotting function. 
+Make sure your data is a dataframe with one column with the SNP names and another with their corresponding p-values. You can then specify these to the plotting function. If you have already -log10-ed your p-values then set the option `logged = TRUE`. 
 
 ```{r}
 manhattanPlot(d, snps_col = "SNP", pvals_col = "PVal")
 ```
+
+Two datasets have been included for ease of testing: 
+
+- `sampleVals` are real data from Klein et al.'s 2005 science paper (run `?sampleVals` for more info and citation). 
+- `random` which is randomly generated values with one significant snp (according to a bonferroni correction). 
 
