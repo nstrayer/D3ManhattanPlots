@@ -2,6 +2,8 @@
 
 Traditional static manhattan plots are slow and ugly. Let's fix that with a little d3 and R!
 
+Here's a [live example](http://nickstrayer.me/D3ManhattanPlots) (or just look in the `gh-pages` branch of this repo).  
+
 ## Example: 
  
 
