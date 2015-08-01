@@ -1,10 +1,17 @@
 ---
-title: "manhattanPlotDemo"
+title: "D3ManhattanPlot Demo"
 author: "Nick Strayer"
-date: "July 26, 2015"
+date: "August 1, 2015"
 output: html_document
 ---
+### Intro: 
+This is a simple use case of using the D3ManhattanPlots HTMLWidget for R to generate interactive manhattan plots for genome wide association studies (GWAS). 
+The package/widget are on [github](http://github.com/nstrayer/D3ManhattanPlots) where you are encuraged to submit issues for desired features (or pull requests for the more adventurous).
 
+### What is this plot?
+Each balloon and string represents a single snp, or base pair on the genome. The height of the bar represents its significance of correlation with a trait or phenotype. These data are a subsection (100 most significant snps when stratified by the male gender) of the data from [Complement factor H polymorphism in age-related macular degeneration. Klein et al. 2005](http://www.ncbi.nlm.nih.gov/pubmed/15761122). 
+
+### How to use: 
 First we load the library and data: 
 ```{r}
 library(manhattanPlot)
