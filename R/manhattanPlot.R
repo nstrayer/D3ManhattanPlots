@@ -16,7 +16,7 @@
 #' @examples
 #' #Load sample dataset from the package.
 #' d = sampleVals
-#' #and plot. It's that easy. 
+#' #and plot. It's that easy.
 #' manhattanPlot(d, sigLine = FALSE)
 #'
 #' @import htmlwidgets
@@ -72,3 +72,20 @@ renderManhattanPlot <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) { expr <- substitute(expr) } # force quoted
   shinyRenderWidget(expr, manhattanPlotOutput, env, quoted = TRUE)
 }
+
+#' Sample SNPS and Pvals from Klein et al. 2004
+#'
+#' This is a subset of the data from the 2005 paper in Science
+#' "Complement Factor H Polymorphism in Age-Related Macular Degeneration". The
+#' data are subsetted to the 100 most significant snps when stratifying by the
+#' male gender.
+#'
+#' @format A data frame with 100 rows and 2 columns:
+#' \describe{
+#'   \item{SNP}{Snp names. Character}
+#'   \item{PVal}{-log10 of the pvalues. Float}
+#' }
+#' @source Klein, R. J., Zeiss, C., Chew, E. Y., Tsai, J. Y., Sackler, R. S., Haynes,
+#' C., ... & Hoh, J. (2005). Complement factor H polymorphism in age-related
+#' macular degeneration. Science, 308(5720), 385-389.
+"sampleVals"
