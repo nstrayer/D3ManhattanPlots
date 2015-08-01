@@ -25,3 +25,8 @@
 svg text {
 	font-family: optima;
 }
+
+.tooltipRect {
+	stroke: black;
+	stroke-width: 1;
+}

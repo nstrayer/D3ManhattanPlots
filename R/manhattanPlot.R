@@ -40,7 +40,6 @@ manhattanPlot <- function(dataset, width = NULL, height = NULL,
     #This is where data manipulation will go.
     data  = data.frame(dataset[snps_col], dataset[pvals_col])
 
-
     # pass the data and settings using 'x'
     x <- list(
       data = data,
