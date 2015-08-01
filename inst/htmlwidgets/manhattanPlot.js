@@ -28,6 +28,14 @@ HTMLWidgets.widget({
             colorScale = d3.scale.linear().domain([0, 1]).range([blue, red]),
             yAxis = d3.svg.axis().scale(yScale).orient("right");
 
+
+        //if data is large (low performance) or animation speed is super, low kill transitions.
+        if (transitionSpeed < 1) {
+            console.log("big data or low transition speed!")
+            updateTime = 0
+            delayTime  = 0
+        }
+
         var svg = d3.select(el)
             .append("svg:svg")
             .attr("width", width)
@@ -47,7 +55,7 @@ HTMLWidgets.widget({
                 .attr("x", 4)
                 .attr("dy", -2);
             g
-                .attr("transform", "translate(" + 30 + ",0)")
+                .attr("transform", "translate(" + 22 + ",0)")
         }
 
         var gy = svg.append("g")
@@ -72,11 +80,6 @@ HTMLWidgets.widget({
         }
 
         function updateManhattan(data, updateTime) {
-
-            if (data.length > 200) { //if it is a small dataset do transitions.
-                updateTime = 0
-                delayTime = 0
-            }
 
             var dataMax    = d3.max(data, function(d) { return d.PVal }),
                 bonferroni = -Math.log10(.05 / data.length),
@@ -139,12 +142,11 @@ HTMLWidgets.widget({
                 .delay(function(d, i) {
                     return delayTime * i;
                 })
-                .attr("cy", function(d) {
-                    return (yScale(d.PVal));
-                })
-                .transition()
                 .attr("fill", function(d) {
                     return colorScale(d.PVal);
+                })
+                .attr("cy", function(d) {
+                    return (yScale(d.PVal));
                 })
 
             //Draw the lines (or balloon strings) beneath the points.
@@ -187,12 +189,12 @@ HTMLWidgets.widget({
                 .attr("transform", "translate(" + xLoc + ", " + (y+5) + ")") //position it over the point
 
             tip.append("rect")
+                .attr("class", "tooltipRect")
                 .attr("width", w)
                 .attr("height", 50)
                 .attr("rx", 15)
                 .attr("ry", 15)
                 .attr("fill", "#f0f0f0")
-                .style("stroke", 2)
 
             var name = tip.append("text") //write the snp name
                 .attr("y", 20)
