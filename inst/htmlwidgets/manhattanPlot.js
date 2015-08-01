@@ -229,21 +229,36 @@ HTMLWidgets.widget({
                 .attr("rx", 15)
                 .attr("ry", 15)
                 .attr("fill", "#f0f0f0")
+                .style("stroke", 2)
 
-            tip.append("text") //write the snp name
+            var name = tip.append("text") //write the snp name
                 .attr("y", 20)
                 .attr("x", 5)
                 .style("font-size", "0px")
-                .text("SNP: " + d.SNP)
-                .transition().duration(250)
+
+            name.append("tspan")
+                .style("font-weight", "bold")
+                .text("SNP: ")
+
+            name.append("tspan")
+                .text( d.SNP )
+
+            name.transition().duration(250)
                 .style("font-size", "14px")
 
-            tip.append("text") //write the pvalue
+            var ps = tip.append("text") //write the pvalue
                 .attr("y", 40)
                 .attr("x", 5)
                 .style("font-size", "0px")
-                .text("P-Value: " + Math.pow(10, -d.PVal).toExponential(4) )
-                .transition().duration(250)
+
+            ps.append("tspan")
+                .style("font-weight", "bold")
+                .text("P-Value: ")
+
+            ps.append("tspan")
+                .text( Math.pow(10, -d.PVal).toExponential(4) )
+
+            ps.transition().duration(250)
                 .style("font-size", "14px")
             }
 
