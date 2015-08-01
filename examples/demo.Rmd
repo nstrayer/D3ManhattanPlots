@@ -8,9 +8,12 @@ output: html_document
 First we load the library and data: 
 ```{r}
 library(devtools)
+library(roxygen2)
 setwd("..")
+document()
 devtools::install() 
 library(manhattanPlot)
+?manhattanPlot
 d = read.csv('examples/data/males_small_data.csv')
 manhattanPlot(d, animationSpeed = 50)
 ```
