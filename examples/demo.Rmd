@@ -7,11 +7,8 @@ output: html_document
 
 First we load the library and data: 
 ```{r}
-library(devtools)
-setwd("..")
-devtools::install() 
 library(manhattanPlot)
-d = read.csv('examples/data/males_small_data.csv')
+d = sampleVals
 ```
 
 Take a quick peak at the data: 
