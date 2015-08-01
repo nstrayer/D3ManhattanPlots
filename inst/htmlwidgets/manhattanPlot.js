@@ -127,9 +127,6 @@ HTMLWidgets.widget({
                         .transition() //make the point bigger
                         .attr("r", 10)
 
-                    d3.select("#" + d.SNP).transition() //move the line with it.
-                        .attr("y2", function(d) { return (yScale(d.PVal) + 10);})
-
                     var xPos = parseFloat(d3.select(this).attr("cx"));
                     var yPos = parseFloat(d3.select(this).attr("cy"));
                     drawTooltip(d, xPos, yPos)
