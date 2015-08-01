@@ -21,3 +21,7 @@
 #tooltip rect {
 	opacity: .95;
 }
+
+svg text {
+	font-family: optima;
+}
