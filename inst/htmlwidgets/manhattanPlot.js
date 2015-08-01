@@ -136,9 +136,6 @@ HTMLWidgets.widget({
                         .transition()
                         .attr("r", 5)
 
-                    d3.select("#" + d.SNP).transition()
-                        .attr("y2", function(d) { return (yScale(d.PVal) + 5);})
-
                     d3.select("#tooltip").remove(); //kill the tooltip.
                 })
                 .transition()
