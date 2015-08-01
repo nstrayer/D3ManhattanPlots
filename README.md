@@ -14,7 +14,8 @@ install_github("nstrayer/D3ManhattanPlots")
 #Load in package data to test. 
 d = sampleVals
 
-manhattanPlot(d)        #Draw it!
+#Draw it!
+manhattanPlot(d)        
 
 #If you don't want a significance line: 
 manhattanPlot(d, sigLine = FALSE)
